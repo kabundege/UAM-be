@@ -60,66 +60,6 @@ export default class Auth {
         }
     }
 
-    static Signup = async (req:Request,res:Response) =>{
-        
-        const hashedPassword = await bcrypt.hash(req.body.password, 10);
-
-        const min = 100000,max=999999;
-        const code = Math.floor(Math.random() * (max - min) + min)
-
-        const html = `
-            <html>
-                <head>
-                    <link rel="stylesheet" href="index.css">
-                </head>
-                <body>
-                    <script src="index.pack.js"></script>
-                    <div style="display:flex;flex-direction:column;align-items:center">
-                        <h1>UAM - Verification</h1>
-                        <p style="color:#999;text-align:center;margin:2em">Use the six digit code provided below to verify you account</p>
-                        <h4>${code}</h4>
-                    </div>
-                </body>
-            </html>
-        `;
-
-        await SendEmail(req.body.email, 'UAM ~ Account Verification', html)
-
-        const newUser = new User({
-            ...req.body,
-            hasTwoFactorAuth: false,
-            password: hashedPassword,
-            status: AccountStatus.VERIFIED,
-            _id: new mongoose.Types.ObjectId(),
-        })
-
-        return newUser.save()
-        .then(async (user) => {
-
-            const { phoneNumber,email } = user;
-            const token = jwt.sign({ email, phoneNumber },process.env.JWT_SECRET)
-
-            return SuccessResponse(res,201,'Signup Successful', { token,user } )
-        })
-        .catch(error => {
-            return ErrorResponse(res,500,error)
-        })
-        //
-    }
-
-    static Verification = async (req:AuthInfoRequest,res:Response) =>{
-
-        try{
-
-            const user = await User.findOne({ email:req.userData.email }).update({ status: AccountStatus.PENDING_VERIFICATION }).exec()
-   
-            return SuccessResponse(res,200,'Reset Successful',user)
-
-        }catch(error){
-            return ErrorResponse(res,500,error)
-        }
-    }
-
     static Reset = async (req:AuthInfoRequest,res:Response) =>{
 
         try{
