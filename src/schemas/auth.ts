@@ -8,6 +8,14 @@ export const SignIn = Joi.object({
     password: Joi.string().required(),
 });
 
+export const GetObject = Joi.object({
+    key: Joi.string().required(),
+});
+
+export const CreateObject = Joi.object({
+    type: Joi.string().required(),
+});
+
 export const ForgotPass = Joi.object({
     email: Joi.string().email().required(),
 });

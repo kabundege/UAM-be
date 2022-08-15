@@ -1,13 +1,14 @@
+import { ObjectSchema } from '@hapi/joi';
 import dotenv from 'dotenv';
 import { NextFunction, Request, Response } from 'express';
 import { ErrorResponse } from '../helpers/Responder';
-import { SignIn, SignUp, ForgotPass, ResetPass } from '../schemas/auth';
+import { SignIn, SignUp, ForgotPass, ResetPass, GetObject, CreateObject } from '../schemas/auth';
 
 dotenv.config();
 
 class Validators {
 
-    private handler = (req:Request,res:Response,schema:any) => {
+    private handler = (req:Request,res:Response,schema:ObjectSchema) => {
         const { error } = schema.validate(req.body);
          
         if ( error ) {
@@ -51,6 +52,18 @@ class Validators {
 
     ResetPassValidation = (req:Request, res:Response, next:NextFunction) => { 
       const result = this.handler(req,res,ResetPass)
+        
+      return result === 1 ? next() : null
+    }
+
+    GetObjectValidation = (req:Request, res:Response, next:NextFunction) => { 
+      const result = this.handler(req,res,GetObject)
+        
+      return result === 1 ? next() : null
+    }
+
+    CreateObjectValidation = (req:Request, res:Response, next:NextFunction) => { 
+      const result = this.handler(req,res,CreateObject)
         
       return result === 1 ? next() : null
     }

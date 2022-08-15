@@ -55,3 +55,22 @@ Content-Type: application/json
 {
     "email": "christophekwizera@gmail.com"
 }
+
+
+###
+POST http://localhost:2000/get-signed-urls
+Accept: application/json
+Content-Type: application/json
+
+{
+    "key": "31a85cc2-75cb-4df1-8869-d9f9acff7a3d.jpg"
+}
+
+###
+POST http://localhost:2000/create-signed-urls
+Accept: application/json
+Content-Type: application/json
+
+{
+    "type": "image/jpg"
+}
