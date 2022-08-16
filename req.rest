@@ -63,7 +63,7 @@ Accept: application/json
 Content-Type: application/json
 
 {
-    "key": "31a85cc2-75cb-4df1-8869-d9f9acff7a3d.jpg"
+    "key": "27163fa5-d96e-4430-9e9c-e62b35da8c43.jpeg"
 }
 
 ###
@@ -72,5 +72,5 @@ Accept: application/json
 Content-Type: application/json
 
 {
-    "type": "image/jpg"
+    "type": "image/jpeg"
 }

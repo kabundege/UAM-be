@@ -53,7 +53,7 @@ export default class Auth {
             //
 
             res.cookie('token',token)
-            return SuccessResponse(res,200,'Signin Successful',token)
+            return SuccessResponse(res,200,'Signin Successful',{ token,user })
 
         }catch(error){
             return ErrorResponse(res,500,error)

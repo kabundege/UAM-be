@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 import Routes from "./routes";
 import mongoose from "mongoose";
 import logging from "./config/logging";
+import cors from 'cors'
 
 dotenv.config()
 
@@ -22,6 +23,9 @@ const app: Application = express();
 /** Body parsing Middleware */
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+/** Cors Setup */
+app.use(cors())
 
 /** Log the request */
 app.use((req, res, next) => {

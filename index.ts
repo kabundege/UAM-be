@@ -6,11 +6,6 @@ import logging from './src/config/logging';
 const server:http.Server = http.createServer(app)
 
 const port = Number(process.env.PORT) || 2000;
-/** Local Ports */
-// const networkInterfaces = os.networkInterfaces();
-// const LocalIP = networkInterfaces['lo0'][0].address;
-// const LanIp = networkInterfaces['en0'][1].address;
-// const LanPort = `${LanIp}:${port}` ;
 
 const NAMESPACE = "Initializer"
 
