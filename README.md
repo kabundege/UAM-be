@@ -47,6 +47,9 @@ PASSWORD = XXXXXXXXXXXXXXX
 
 - [Token](#7)
 
+### Document Validation
+
+- [User Docs Validation](#8)
 
 ## Endpoints
 
@@ -208,7 +211,7 @@ Response:
 Endpoint
 
 ```text
-/verify-token
+/verify-token/:token
 ```
 
 Headers:
@@ -216,6 +219,30 @@ Headers:
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
+```
+
+Response:
+
+```json
+{
+  "statusCode": 200,
+  "message": "Account Validated Successfully!"
+}
+```
+
+
+### 6. Verify a User's Documents  ~ ( GET Request )
+
+Endpoint
+
+```text
+/validate-user/:id
+```
+
+Headers:
+```
+Accept: application/json
+Content-Type: application/json
 ```
 
 Response:

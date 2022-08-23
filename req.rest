@@ -74,3 +74,8 @@ Content-Type: application/json
 {
     "type": "image/jpeg"
 }
+
+###
+GET http://localhost:2000/validate-user/630512a2934bf6bd73cd76e3
+Accept: application/json
+Content-Type: application/json

@@ -8,11 +8,6 @@ const app_1 = __importDefault(require("./src/app"));
 const logging_1 = __importDefault(require("./src/config/logging"));
 const server = http_1.default.createServer(app_1.default);
 const port = Number(process.env.PORT) || 2000;
-/** Local Ports */
-// const networkInterfaces = os.networkInterfaces();
-// const LocalIP = networkInterfaces['lo0'][0].address;
-// const LanIp = networkInterfaces['en0'][1].address;
-// const LanPort = `${LanIp}:${port}` ;
 const NAMESPACE = "Initializer";
 server.listen(port, () => {
     logging_1.default.info(NAMESPACE, `Server is running ${port}`);

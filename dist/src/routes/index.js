@@ -15,7 +15,7 @@ route.get('/', controller_1.default.WelcomeApi);
 route.post('/signin', SignInValidation, controller_1.default.Signin);
 route.post('/forgot-password', ForgotPassValidation, controller_1.default.Forgot);
 route.post('/reset-password', authenticate_1.AuthCheck, ResetPassValidation, controller_1.default.Reset);
-route.get('/verify-token/:token', authenticate_1.AuthCheck, controller_1.default.validateToken);
+route.get('/verify-token/:token', controller_1.default.validateToken);
 route.get('/users', controller_1.default.getAllUsers);
 /** Signed Url APIs */
 route.post('/get-signed-urls', GetObjectValidation, getSignedUrls_1.default.getSignedUrl);

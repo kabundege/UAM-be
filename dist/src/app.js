@@ -9,6 +9,7 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const routes_1 = __importDefault(require("./routes"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const logging_1 = __importDefault(require("./config/logging"));
+const cors_1 = __importDefault(require("cors"));
 dotenv_1.default.config();
 /** Connect to Mongo */
 mongoose_1.default.connect(config_1.default.url, config_1.default.options)
@@ -23,6 +24,8 @@ const app = (0, express_1.default)();
 /** Body parsing Middleware */
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
+/** Cors Setup */
+app.use((0, cors_1.default)());
 /** Log the request */
 app.use((req, res, next) => {
     /** Log the req */

@@ -1,7 +1,7 @@
 import { Router } from "express";
 import Controller from '../controller';
 import AwsController from '../controller/getSignedUrls'
-import { AuthCheck } from "../middlewares/authenticate";
+import { AuthCheck,TokenCheck } from "../middlewares/authenticate";
 import Validators from "../middlewares/validate";
 
 const route:Router = Router()
@@ -14,10 +14,11 @@ const {
 
 /** User APIs */
 route.get('/', Controller.WelcomeApi)
-route.post('/signin', SignInValidation, Controller.Signin)
+route.post('/signin', SignInValidation, Controller.userSignin)
 route.post('/forgot-password', ForgotPassValidation, Controller.Forgot)
-route.post('/reset-password', AuthCheck, ResetPassValidation, Controller.Reset)
-route.get('/verify-token/:token', AuthCheck, Controller.validateToken)
+route.post('/reset-password/:token', TokenCheck, ResetPassValidation, Controller.Reset)
+route.get('/verify-token/:token', TokenCheck, Controller.tokenSignin)
+route.get('/validate-user/:id', Controller.ValidateUser)
 route.get('/users', Controller.getAllUsers)
 
 /** Signed Url APIs */

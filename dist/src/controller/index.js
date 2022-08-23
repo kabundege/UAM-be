@@ -18,12 +18,7 @@ const User_1 = __importDefault(require("../Models/User"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const mailer_1 = require("../helpers/mailer");
-var AccountStatus;
-(function (AccountStatus) {
-    AccountStatus[AccountStatus["UNVERIFIED"] = 0] = "UNVERIFIED";
-    AccountStatus[AccountStatus["PENDING_VERIFICATION"] = 1] = "PENDING_VERIFICATION";
-    AccountStatus[AccountStatus["VERIFIED"] = 2] = "VERIFIED";
-})(AccountStatus || (AccountStatus = {}));
+const Code_1 = __importDefault(require("../Models/Code"));
 class Auth {
 }
 exports.default = Auth;
@@ -43,6 +38,8 @@ Auth.getAllUsers = (_, res) => __awaiter(void 0, void 0, void 0, function* () {
     //
 });
 Auth.validateToken = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const params = req.params;
+    console.log('======', params);
     //
     return (0, Responder_1.SuccessResponse)(res, 200, 'Token is valid', req.userData);
 });
@@ -56,11 +53,37 @@ Auth.Signin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (!(yield bcryptjs_1.default.compare(password, user.password))) {
             return (0, Responder_1.ErrorResponse)(res, 400, 'Invalid User Credentials');
         }
-        const { phoneNumber } = user;
+        const { phoneNumber, _id: userId } = user;
         const token = jsonwebtoken_1.default.sign({ email, phoneNumber }, process.env.JWT_SECRET);
-        //
+        const existingCode = yield Code_1.default.findOne({ userId }).exec();
+        // if there's an existing code delete it;
+        if (existingCode)
+            yield Code_1.default.deleteOne({ id: existingCode._id }).exec();
+        // Part 2 ~ Confirm Account Creation
+        const min = 100000, max = 999999;
+        const code = Math.floor(Math.random() * (max - min) + min);
+        const html = `
+                <html>
+                    <head>
+                        <link rel="stylesheet" href="index.css">
+                    </head>
+                    <body>
+                        <script src="index.pack.js"></script>
+                        <div style="display:flex;flex-direction:column;align-items:center">
+                            <h1>UAM - Verification</h1>
+                            <p style="color:#999;text-align:center;margin:2em">Use the six digit code provided below to Singin</p>
+                            <h4>${code}</h4>
+                        </div>
+                    </body>
+                </html>
+            `;
+        /** Send Email */
+        yield (0, mailer_1.SendEmail)(req.body.email, 'UAM ~ Account Verification', html);
+        /** save the code & associate with user by id */
+        const codePayload = new Code_1.default({ userId, code });
+        yield codePayload.save();
         res.cookie('token', token);
-        return (0, Responder_1.SuccessResponse)(res, 200, 'Signin Successful', token);
+        return (0, Responder_1.SuccessResponse)(res, 200, 'Signin Successful', { token });
     }
     catch (error) {
         return (0, Responder_1.ErrorResponse)(res, 500, error);

@@ -18,9 +18,7 @@ const logging_1 = __importDefault(require("../config/logging"));
 const user = process.env.EMAIL;
 const pass = process.env.PASSWORD;
 const transporter = nodemailer_1.default.createTransport({
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true,
+    host: 'smtp.outlook.com',
     auth: { user, pass }
 });
 const SendEmail = (to, subject, html) => __awaiter(void 0, void 0, void 0, function* () {
@@ -30,11 +28,13 @@ const SendEmail = (to, subject, html) => __awaiter(void 0, void 0, void 0, funct
         subject,
         html // plain text body
     };
-    return transporter.sendMail(mailOptions, function (err, info) {
-        if (err)
-            logging_1.default.error('NodeMailer', err.message, err);
-        else
-            logging_1.default.info('NodeMailer', info.response, info);
+    return new Promise((res, rej) => {
+        transporter.sendMail(mailOptions, function (err, info) {
+            if (err)
+                rej(logging_1.default.error('NodeMailer', err.message, err));
+            else
+                res(logging_1.default.info('NodeMailer', info.response, info));
+        });
     });
 });
 exports.SendEmail = SendEmail;
