@@ -25,5 +25,4 @@ route.get('/users', Controller.getAllUsers)
 route.post('/get-signed-urls', GetObjectValidation, AwsController.getSignedUrl)
 route.post('/create-signed-urls', CreateObjectValidation, AwsController.createSignedUrl)
 
-
 export default route

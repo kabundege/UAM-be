@@ -17,15 +17,15 @@ mongoose.connect(MONGO.url, MONGO.options)
     logging.error(NAMESPACE, error.message, error);
 });
 
-const NAMESPACE = 'Server';
+const NAMESPACE = 'Main-Server';
 const app: Application = express();
+
+/** Cors Setup */
+app.use(cors())
 
 /** Body parsing Middleware */
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-/** Cors Setup */
-app.use(cors())
 
 /** Log the request */
 app.use((req, res, next) => {
